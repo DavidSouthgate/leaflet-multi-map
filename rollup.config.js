@@ -36,6 +36,12 @@ export default {
             ...commonOutput,
             format: "es",
             file: `dist/${name}.esm.js`,
+        },
+        {
+            ...commonOutput,
+            format: "es",
+            file: `dist/${name}.esm.min.js`,
+            plugins: [terser()]
         }
     ],
     plugins: [

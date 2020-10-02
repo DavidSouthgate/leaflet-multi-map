@@ -1,14 +1,18 @@
 {
-  "name": "leaflet-tmp",
+  "name": "leaflet-multi-map",
   "version": "0.0.1",
   "description": "",
   "author": "David Southgate",
   "scripts": {
+    "prepare": "npm run build",
     "dev": "rollup -w --config rollup.config.js",
     "build": "rollup --config rollup.config.js"
   },
-  "main": "dist/leaflet-multi-map.js",
-  "module": "dist/leaflet-multi-map.esm.js",
+  "main": "dist/leaflet-multi-map.min.js",
+  "module": "dist/leaflet-multi-map.esm.min.js",
+  "files": [
+    "dist/leaflet-multi-map.esm.min.js"
+  ],
   "license": "MIT",
   "dependencies": {
     "@davidsouthgate/leaflet-clonelayer": "DavidSouthgate/leaflet-clonelayer#master"
