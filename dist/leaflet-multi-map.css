@@ -8,3 +8,7 @@
     height: 100%;
     display: none;
 }
+
+.leaflet-control-layers-list label {
+    margin-bottom: 0;
+}
