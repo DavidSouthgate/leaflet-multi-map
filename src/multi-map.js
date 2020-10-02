@@ -36,6 +36,15 @@ L.MultiMap = L.Class.extend({
         }
     },
 
+    removeAllOverlays: function() {
+        for(const map of this.maps) {
+            for(const layer of Object.values(map._overlayMaps)) {
+                map.vanillaMap.removeLayer(layer);
+                map.vanillaLayersControl.removeLayer(layer);
+            }
+        }
+    },
+
     _constructMapVanillaTileLayers: function () {
         for(const map of this.maps) {
             map.vanillaTileLayers = {};
