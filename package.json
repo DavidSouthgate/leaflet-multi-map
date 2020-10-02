@@ -11,7 +11,8 @@
   "main": "dist/leaflet-multi-map.min.js",
   "module": "dist/leaflet-multi-map.esm.min.js",
   "files": [
-    "dist/leaflet-multi-map.esm.min.js"
+    "dist/leaflet-multi-map.esm.min.js",
+    "dist/leaflet-multi-map.css"
   ],
   "license": "MIT",
   "dependencies": {
