@@ -1,20 +1,14 @@
 import cloneLayer from "@davidsouthgate/leaflet-clonelayer";
 
 L.MultiMap = L.Class.extend({
-    id: null,
-    tileLayers: [],
-    maps: [],
-    center: [0, 0],
-    zoom: 0,
-    _currentMapId: null,
-    _currentMapIndex: null,
-
     initialize: function(id = null, options = {}) {
         this.id = id;
-        this.tileLayers = options.tileLayers ? options.tileLayers : this.tileLayers;
-        this.maps = options.maps ? options.maps : this.maps;
-        this.center = options.center ? options.center : this.center;
-        this.zoom = options.zoom ? options.zoom : this.zoom;
+        this.tileLayers = options.tileLayers ? options.tileLayers : [];
+        this.maps = options.maps ? options.maps : [];
+        this.center = options.center;
+        this.zoom = options.zoom ? options.zoom : 0;
+        this._currentMapId = null;
+        this._currentMapIndex = null;
 
         // TODO. Needed?
         this._onBaseLayerChange = this._onBaseLayerChange.bind(this);
@@ -90,9 +84,6 @@ L.MultiMap = L.Class.extend({
             }
         }
 
-        console.log("===");
-        console.log(activeLayers);
-
         return {
             ...map.vanillaOptions,
             zoom: this.zoom - map.zoomOffset,
@@ -144,7 +135,7 @@ L.MultiMap = L.Class.extend({
 
     _onOverlayAdd: function (event) {
         for(const map of this.maps) {
-            const layer = map._overlayMaps[event.name];
+            let layer = map._overlayMaps[event.name];
             map.vanillaMap.addLayer(layer);
         }
     },

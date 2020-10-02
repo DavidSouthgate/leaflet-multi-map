@@ -1,12 +1,8 @@
 L.MultiMap.TileLayer = L.Class.extend({
-    id: null,
-    title: null,
-    vanillaTileLayer: null,
-
     initialize: function(id = null, options = {}) {
-        this.id = id ? id : this.id;
-        this.title = options.title ? options.title : this.title;
-        this.vanillaTileLayer = options.vanillaTileLayer ? options.vanillaTileLayer : this.vanillaTileLayer;
+        this.id = id ? id : null;
+        this.title = options.title ? options.title : null;
+        this.vanillaTileLayer = options.vanillaTileLayer ? options.vanillaTileLayer : null;
     }
 });
 
