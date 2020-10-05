@@ -1,6 +1,7 @@
 import cloneLayer from "@davidsouthgate/leaflet-clonelayer";
 
 L.MultiMap = L.Class.extend({
+
     initialize: function(id = null, options = {}) {
         this.id = id;
         this.tileLayers = options.tileLayers ? options.tileLayers : [];
@@ -31,7 +32,9 @@ L.MultiMap = L.Class.extend({
             if(checked) {
                 map.vanillaMap.addLayer(l);
             }
-            map.vanillaLayersControl.addOverlay(l, name);
+            if(name) {
+                map.vanillaLayersControl.addOverlay(l, name);
+            }
             map._overlayMaps[name] = l;
         }
     },
