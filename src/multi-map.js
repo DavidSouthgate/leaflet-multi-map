@@ -75,6 +75,25 @@ L.MultiMap = L.Class.extend({
         return this._mapIds.includes(mapId)
     },
 
+    getTileLayer: function (tileLayerId) {
+        for(const tileLayer of this.tileLayers) {
+            if (tileLayerId && tileLayer.id === tileLayerId) {
+                return tileLayer;
+            }
+        }
+        return null;
+    },
+
+    hasTileLayer: function (tileLayerId) {
+        if(!tileLayerId) return false;
+        for(const tileLayer of this.tileLayers) {
+            if(tileLayer.id === tileLayerId) {
+                return true;
+            }
+        }
+        return false;
+    },
+
     /**
      * Add a new map to the multi map
      * @param map {L.MultiMap.Map}
@@ -128,7 +147,7 @@ L.MultiMap = L.Class.extend({
     removeAllOverlays: function() {
         for(const map of this.maps) {
             for(const layer of Object.values(map._overlayMaps)) {
-                map._vanillaMap.removeLayer(layer);
+                map.vanillaMap.removeLayer(layer);
                 map._vanillaLayersControl.removeLayer(layer);
             }
         }
@@ -149,13 +168,13 @@ L.MultiMap = L.Class.extend({
         mapElement.className = "leaflet-multi-map";
         this._containerElement.appendChild(mapElement);
 
-        map._vanillaMap = L.map(map.id, this._getMapVanillaOptions(map));
-        map._vanillaMap.on("baselayerchange", this._onBaseLayerChange);
-        map._vanillaMap.on("overlayadd", this._onOverlayAdd);
-        map._vanillaMap.on("overlayremove", this._onOverlayRemove);
-        map._vanillaMap.on("moveend", (e) => this._onMoveEnd(e, map));
+        map.vanillaMap = L.map(map.id, this._getMapVanillaOptions(map));
+        map.vanillaMap.on("baselayerchange", this._onBaseLayerChange);
+        map.vanillaMap.on("overlayadd", this._onOverlayAdd);
+        map.vanillaMap.on("overlayremove", this._onOverlayRemove);
+        map.vanillaMap.on("moveend", (e) => this._onMoveEnd(e, map));
 
-        map._vanillaLayersControl = L.control.layers(map._vanillaTileLayers).addTo(map._vanillaMap);
+        map._vanillaLayersControl = L.control.layers(map._vanillaTileLayers).addTo(map.vanillaMap);
     },
 
     /**
@@ -209,9 +228,9 @@ L.MultiMap = L.Class.extend({
                 this._currentMapId = mapId;
                 this._currentMapIndex = this.maps.indexOf(map);
                 if(!map._hasAnyLayer() && map._tileLayerTitles.length > 0) {
-                    map._vanillaMap.addLayer(map._vanillaTileLayers[map._tileLayerTitles[0]]);
+                    map.vanillaMap.addLayer(map._vanillaTileLayers[map._tileLayerTitles[0]]);
                 }
-                map._vanillaMap.invalidateSize();
+                map.vanillaMap.invalidateSize();
             }
         }
     },
@@ -226,7 +245,7 @@ L.MultiMap = L.Class.extend({
         let name = overlay.name;
         let l = cloneLayer(overlay.layer);
         if(checked) {
-            map._vanillaMap.addLayer(l);
+            map.vanillaMap.addLayer(l);
         }
         if(name) {
             map._vanillaLayersControl.addOverlay(l, name);
@@ -264,14 +283,14 @@ L.MultiMap = L.Class.extend({
     _onOverlayAdd: function (event) {
         for(const map of this.maps) {
             let layer = map._overlayMaps[event.name];
-            map._vanillaMap.addLayer(layer);
+            map.vanillaMap.addLayer(layer);
         }
     },
 
     _onOverlayRemove: function (event) {
         for(const map of this.maps) {
             const layer = map._overlayMaps[event.name];
-            map._vanillaMap.removeLayer(layer);
+            map.vanillaMap.removeLayer(layer);
         }
     },
 
@@ -282,7 +301,7 @@ L.MultiMap = L.Class.extend({
         for(const otherMap of this.maps) {
             if(otherMap.id !== this._currentMapId) {
                 const zoomOffset = otherMap.zoomOffset - currentZoomOffset;
-                otherMap._vanillaMap.setView(event.target.getCenter(), event.target.getZoom() - zoomOffset);
+                otherMap.vanillaMap.setView(event.target.getCenter(), event.target.getZoom() - zoomOffset);
             }
         }
     },
@@ -290,9 +309,9 @@ L.MultiMap = L.Class.extend({
     _changeMapLayer: function (map, newLayerTitle) {
         for (const [layerTitle, layer] of Object.entries(map._vanillaTileLayers)) {
             if(layerTitle === newLayerTitle) {
-                map._vanillaMap.addLayer(layer);
+                map.vanillaMap.addLayer(layer);
             } else {
-                map._vanillaMap.removeLayer(layer);
+                map.vanillaMap.removeLayer(layer);
             }
         }
     },

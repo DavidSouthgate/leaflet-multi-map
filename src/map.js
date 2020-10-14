@@ -4,10 +4,10 @@ L.MultiMap.Map = L.Class.extend({
     //      tileLayerIds          [{string}]                The IDs of the tile layers that should use this map
     //      zoomOffset            {number}                  The difference in zoom for this map from the multimap zoom.
     //      vanillaOptions        {object}                  Options which should be passed to the L.Map instance
+    //      vanillaMap            {L.Map}                   The vanilla leaflet map instance
     // Private Properties:
     //      _overlayMaps          {<Name> -> L.LayerGroup}  Overlays which have been added to this map
     //      _tileLayerTitles      [{string}]                The names of the tile layers that should use this map
-    //      _vanillaMap           {L.Map}                   The vanilla leaflet map instance
     //      _vanillaLayersControl {L.Control.Layers}        The layer controls used on this map
     //      _vanillaTileLayers    {<Name> -> L.TileLayer}   A map from a tile layer's name to the vanilla leaflet tile layer
 
@@ -16,9 +16,9 @@ L.MultiMap.Map = L.Class.extend({
         this.tileLayerIds = options.tileLayerIds ? options.tileLayerIds : [];
         this.zoomOffset = options.zoomOffset ? options.zoomOffset : 0;
         this.vanillaOptions = options.vanillaOptions ? options.vanillaOptions : {};
+        this.vanillaMap = null;
         this._overlayMaps = {};
         this._tileLayerTitles = [];
-        this._vanillaMap = null;
         this._vanillaLayersControl = null;
         this._vanillaTileLayers = {};
     },
@@ -26,7 +26,7 @@ L.MultiMap.Map = L.Class.extend({
     _hasAnyLayer() {
         let flag = false
         for(const vanillaTileLayer of Object.values(this._vanillaTileLayers)) {
-            if(this._vanillaMap.hasLayer(vanillaTileLayer)) {
+            if(this.vanillaMap.hasLayer(vanillaTileLayer)) {
                 flag = true;
             }
         }
